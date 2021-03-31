@@ -1,0 +1,11 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#content {
+	background-color: rgb(155, 125, 155);
+	margin-top: 5px;
+	padding: 15px;
+	border: 2px solid black;
+}
