@@ -40,7 +40,7 @@ $(document).ready(function() {
 					}
 				}
 				$(data).append(ul);
-				$(data).dbclick(function() {
+				$(data).dblclick(function() {
 					$("#editBtn").click();
 					$("#id1").attr("value", this.getElementsByClassName("photo")[0].currentSrc)
 					if (this.getElementsByClassName("photo"))
