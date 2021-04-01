@@ -1,13 +1,27 @@
 const fs = require("fs");
 
-const DATABASE = "databases.json";
+const randomstring = require("randomstring");
+
+const DATABASE = "./databases/data.json";
+
+if (!fs.existsSync("./databases"))
+	fs.mkdir("./databases", err => {});
+
+function addDatabase(name) {
+	const databases = readDatabases();
+	if (name in databases)
+		return false;
+	databases[name] = [];
+	fs.writeFileSync(DATABASE, JSON.stringify(databases));
+	return true;
+}
 
 function readDatabases() {
 	try {
 		const result = JSON.parse(fs.readFileSync(DATABASE, "utf8"));
-		return result == undefined ? null : result;
+		return result == undefined ? {} : result;
 	} catch (e) {
-		return null;
+		return {};
 	}
 }
 
@@ -22,28 +36,48 @@ function getDatabasesName() {
 	}
 }
 
+
 function getTabel(database) {
 	const databases = readDatabases();
 	if (databases == null || !database in databases)
-		return null;
-	return databases[database];
+		return {};
+	return databases[database] == undefined ? {} : databases[database];
+}
+
+function deleteData(database, id) {
+	const tabel = getTabel(database);
+	console.log(tabel)
+	if (tabel.isEmpty())
+		return false;
+	for (let i = 0; i< tabel.length; i++)
+		if (tabel[i].id == id)
+			delete tabel[i];
+	console.log(tabel)
+	return true;
 }
 
 function addData(database, req) {
-	console.log(req.files)
+	const tabel = getTabel(database);
+	const databases = readDatabases();
+	if (!database in databases)
+		return false;
+
 	const file = req.files.img;
-	const fileName = new Date().getTime() + file.name;
-	console.log(fileName)
+	const fileName = new Date().getTime() + "_" + randomstring.generate({
+	  length: 20,
+	  charset: 'alphabetic'
+	});
 
-	fs.mkdir(`./img/${req.params.databse}/`, {recursive: true}, err => {});
+	fs.mkdir(`./databases/img/${req.params.databse}/`, {recursive: true}, err => {});
 
-	file.mv(`./img/${req.params.databse}/${fileName}`, err => {});
-	// const databases = readDatabases();
-	// if (databases == null || !database in databases)
-	// 	return null;
-	// databases[database].push(obj);
-	// fs.writeFileSync(DATABASE, JSON.stringify(databases));
-	// return obj;
+	file.mv(`./databases/img/${req.params.databse}/${fileName}`, err => console.log(err));
+	const newData = req.body;
+	newData.img = fileName;
+	newData.id = new Date().getTime();
+
+	databases[database].push(newData);
+	fs.writeFileSync(DATABASE, JSON.stringify(databases));
+	return newData;
 }
 
 function updateData(database, index, obj) {
@@ -55,4 +89,4 @@ function updateData(database, index, obj) {
 	return obj;
 }
 
-module.exports = {readDatabases, getDatabasesName, getTabel, addData, updateData};
+module.exports = {addDatabase, readDatabases, deleteData, getDatabasesName, getTabel, addData, updateData};

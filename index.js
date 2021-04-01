@@ -1,3 +1,11 @@
+Object.prototype.isEmpty = function() {
+	for (const key in this)
+		if (this.hasOwnProperty(key))
+			return false;
+	return true;
+};
+
+
 const express = require("express");
 const upload = require("express-fileupload");
 const app = express();
@@ -9,6 +17,7 @@ app.use(upload());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.use("/db/img", express.static("databases/img"));
 app.use("/assets/css", express.static("public/css"));
 app.use("/assets/img", express.static("public/img"));
 app.use("/assets/js", express.static("public/js"));

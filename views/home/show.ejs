@@ -1,0 +1,126 @@
+<%- include("../components/head"); %>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addData">Tambahkan
+                    <%- body.database -%></button>
+
+                <button class="btn btn-info d-none" id="editBtn" data-bs-toggle="modal" data-bs-target="#edit">Edit</button>
+               
+                <button class="btn btn-success">Cetak</button>
+                <div class="modal fade" id="addData" tabindex="-1" aria-labelledby="addDataTabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addDataTabel">Tambahkan
+                                    <%- body.database -%>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/home/<%- body.database -%>/add" method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="img" class="form-label">Foto</label>
+                                        <input required="on" autocomplete="off" type="file" class="form-control" id="img" name="img">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nama" class="form-label">Nama</label>
+                                        <input required="on" autocomplete="off" type="text" class="form-control" id="nama" name="nama">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="kelahiran" class="form-label">Kelahiran</label>
+                                        <input required="on" autocomplete="off" type="date" class="form-control" id="kelahiran" name="kelahiran">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="alamat" class="form-label">Alamat</label>
+                                        <input required="on" autocomplete="off" type="text" class="form-control" id="alamat" name="alamat">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ayah" class="form-label">Ayah</label>
+                                        <input required="on" autocomplete="off" type="text" class="form-control" id="ayah" name="ayah">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ibu" class="form-label">Ibu</label>
+                                        <input required="on" autocomplete="off" type="text" class="form-control" id="ibu" name="ibu">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="reset" class="btn btn-secondary"><i class="bi bi-x-diamond-fill"></i> Reset Form</button>
+                                        <button type="submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> Simpan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="edit">Edit
+                                    <%- body.database -%>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/home/<%- body.database -%>/add" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" id="id1">
+                                    <div class="mb-3">
+                                        <img src="" id="img-preview" class="photo">
+                                        <label for="img1" class="form-label">Foto</label>
+                                        <input required="on" autocomplete="off" type="file" class="form-control" id="img1" name="img">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nama1" class="form-label">Nama</label>
+                                        <input required="on" autocomplete="off" type="text" class="form-control" id="nama1" name="nama1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="kelahiran1" class="form-label">Kelahiran</label>
+                                        <input required="on" autocomplete="off" type="date" class="form-control" id="kelahiran1" name="kelahiran1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="alamat1" class="form-label">Alamat</label>
+                                        <input required="on" autocomplete="off" type="text" class="form-control" id="alamat1" name="alamat1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ayah1" class="form-label">Ayah</label>
+                                        <input required="on" autocomplete="off" type="text" class="form-control" id="ayah1" name="ayah1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ibu1" class="form-label">Ibu</label>
+                                        <input required="on" autocomplete="off" type="text" class="form-control" id="ibu1" name="ibu1">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="reset" class="btn btn-secondary"><i class="bi bi-x-diamond-fill"></i> Reset Form</button>
+                                        <button type="submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> Ubah</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h6>Pagination:</h6>
+                <div class="pagination">
+                    <% if (body.tabel != undefined) { %>
+                        <% for (let i = 1; i <= Math.ceil(body.tabel.length / 4); i++) { %>
+                            <a href="/home/show/<%- body.database -%>/<%- i -%>">
+                                <%- i -%></a>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="data" class="col-12">
+                
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/show.js"></script>
+</body>

@@ -11,6 +11,10 @@
 	margin: 8px 0;
 }
 
+.btn {
+	margin: 5px;
+}
+
 p {
 	text-indent: 3px;
 }
@@ -40,18 +44,19 @@ p {
 .slide {
 	width: 21cm;
 	height: 29.7cm;
-	padding: .5cm;
+	padding: .85cm;
 	position: relative;
 	box-sizing: border-box;
 	border: 1px solid black;
 	overflow-y: hidden;
 }
 
-.slide .number-page {
+.slide .page {
 	position: absolute;
 	left: .3cm;
 	right: .3cm;
 	bottom: .3cm;
+	border-top: 2px dotted black;
 }
 
 .slide .data {
@@ -62,10 +67,10 @@ p {
 	display: flex;
 }
 
-.slide .data img.photo {
+img.photo {
 	width: 3cm;
 	height: 4cm;
-	border: 2px solid black;
+	border: 3px solid black;
 }
 
 .pagination a {
