@@ -56,15 +56,19 @@ router.get("/show/:database/:page", (req, res) => {
 	res.render("home/show", data);
 });
 
-router.post("/:databse/add", (req, res) => {
-	databases_model.addData(req.params.databse, req);
-	res.redirect("/home/show" + req.params.databse);
+router.post("/:database/add", (req, res) => {
+	databases_model.addData(req.params.database, req);
+	res.redirect(`/home/${req.params.database}/show`);
 });
 
+router.post("/:database/update", (req, res) => {
+	databases_model.updateData(req.params.database, req.body.id1, req);
+	res.redirect(`/home/${req.params.database}/1`);
+});
 
-router.post("/:databse/edit", (req, res) => {
-	databases_model.addData(req.params.databse, req);
-	res.redirect("/home/" + req.params.databse);
+router.post("/:database/delete/:id", (req, res) => {
+	databases_model.deleteData(req.params.database, req.params.id);
+	res.redirect(`/home/${req.params.database}/1`);
 });
 
 router.get("/index", (req, res) => res.redirect("/home"));

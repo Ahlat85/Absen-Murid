@@ -9,7 +9,8 @@
 
                 <button class="btn btn-info d-none" id="editBtn" data-bs-toggle="modal" data-bs-target="#edit">Edit</button>
                
-                <button class="btn btn-success">Cetak</button>
+                <button id="print-btn" class="btn btn-success">Cetak</button>
+
                 <div class="modal fade" id="addData" tabindex="-1" aria-labelledby="addDataTabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -65,12 +66,12 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="/home/<%- body.database -%>/add" method="POST" enctype="multipart/form-data">
-                                    <input type="hidden" name="id" id="id1">
+                                <form action="/home/<%- body.database -%>/update" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="id1" id="id1">
                                     <div class="mb-3">
                                         <img src="" id="img-preview" class="photo">
                                         <label for="img1" class="form-label">Foto</label>
-                                        <input required="on" autocomplete="off" type="file" class="form-control" id="img1" name="img">
+                                        <input autocomplete="off" type="file" class="form-control" id="img1" name="img1">
                                     </div>
                                     <div class="mb-3">
                                         <label for="nama1" class="form-label">Nama</label>
@@ -93,6 +94,7 @@
                                         <input required="on" autocomplete="off" type="text" class="form-control" id="ibu1" name="ibu1">
                                     </div>
                                     <div class="modal-footer">
+                                        <button id="delete-data" class="btn btn-danger"><i class="bi bi-x-diamond-fill"></i> Hapus</button>
                                         <button type="reset" class="btn btn-secondary"><i class="bi bi-x-diamond-fill"></i> Reset Form</button>
                                         <button type="submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> Ubah</button>
                                     </div>
