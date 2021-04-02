@@ -59,6 +59,7 @@
 		                            </th>
 		                            <th>
 		                            	<a class="btn btn-primary" href="/home/show/<%= body.databases[i] %>"><i class="bi bi-three-dots"></i> Detail</a>
+		                            	<a class="btn btn-danger" onclick="return confirm('Yakin, ingin menghapus database ini?')" href="/home/<%= body.databases[i] %>/delete"><i class="bi bi-x-diamond-fill"></i> Hapus Database</a>
 		                            </th>
 		                        </tr>
 							<% } %>

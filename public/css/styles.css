@@ -45,10 +45,10 @@ p {
 	width: 21cm;
 	height: 29.7cm;
 	padding: .85cm;
-	position: relative;
 	box-sizing: border-box;
 	border: 1px solid black;
 	overflow-y: hidden;
+	position: relative;
 }
 
 .slide .page {
@@ -56,7 +56,7 @@ p {
 	left: .3cm;
 	right: .3cm;
 	bottom: .3cm;
-	border-top: 2px dotted black;
+	border-top: .12cm dashed black
 }
 
 .slide .data {

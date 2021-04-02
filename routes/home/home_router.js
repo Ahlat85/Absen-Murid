@@ -71,6 +71,11 @@ router.post("/:database/delete/:id", (req, res) => {
 	res.redirect(`/home/${req.params.database}/1`);
 });
 
+router.get("/:database/delete/", (req, res) => {
+	databases_model.deleteDatabase(req.params.database);
+	res.redirect("/home");
+});
+
 router.get("/index", (req, res) => res.redirect("/home"));
 
 module.exports = router;

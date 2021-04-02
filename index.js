@@ -1,9 +1,9 @@
-Object.prototype.isEmpty = function() {
-	for (const key in this)
-		if (this.hasOwnProperty(key))
-			return false;
-	return true;
-};
+// Object.prototype.isEmpty = function() {
+// 	for (const key in this)
+// 		if (this.hasOwnProperty(key))
+// 			return false;
+// 	return true;
+// };
 
 
 const express = require("express");

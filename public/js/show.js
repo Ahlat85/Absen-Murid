@@ -23,11 +23,11 @@ $(document).ready(function() {
 			const perPage = Math.ceil(e.length / 4);
 
 			const slide = toDOM(`<div class="slide"></div>`);
-			$(slide).append(`<h1 class="text-center text-uppercase">${database.trim()}</h1>`);
+			$(slide).append(`<h1 class="text-center text-uppercase">${database.trim().replaceAll("%20", "\xa0")}</h1>`);
 
 			for (let i = 0; i < 4; i++) {
 				if (e[i] == null)
-					break;
+					continue;
 				const data = toDOM(`<iv class="data"></iv>`);
 				const detail = toDOM(`<iv class="detail"></iv>`);
 				const ul = toDOM("<ul></ul>");
@@ -51,23 +51,32 @@ $(document).ready(function() {
 					}
 				}
 				$(data).append(ul);
-				$(data).dblclick(function() {
-					$("#delete-data").click(() => {
-						fetch(`/home/${database}/delete/${e[i].id}`, {
-							method: 'POST',
-						});
-						window.location.href = window.location.href;
-					});
-					$("#editBtn").click();
-					$("#id1").attr("value", e[i].id);
-					console.log(this.getElementsByClassName("photo"))
-					if (this.getElementsByClassName("photo").length > 0)
-						$("#img-preview").attr("src", this.getElementsByClassName("photo")[0].currentSrc);
-					$("#nama1").attr("value", e[i].nama);
-					$("#kelahiran1").attr("value", e[i].kelahiran);
-					$("#alamat1").attr("value", e[i].alamat);
-					$("#ayah1").attr("value", e[i].ayah);
-					$("#ibu1").attr("value", e[i].ibu);
+				$(data).click(function() {
+					let btn = this;
+					Swal.fire({
+						title: "Edit Data",
+						text: "Tekan 'Edit' jika ingin merubah data.",
+						icon: "question",
+						confirmButtonText: "Edit"
+					}).then(result => {
+						if (result.isConfirmed) {
+							$("#delete-data").click(() => {
+								fetch(`/home/${database}/delete/${e[i].id}`, {
+									method: 'POST'
+								});
+								location.reload(true);
+							});
+							$("#editBtn").click();
+							$("#id1").attr("value", e[i].id);
+							$("#nama1").attr("value", e[i].nama);
+							$("#kelahiran1").attr("value", e[i].kelahiran);
+							$("#alamat1").attr("value", e[i].alamat);
+							$("#ayah1").attr("value", e[i].ayah);
+							$("#ibu1").attr("value", e[i].ibu);
+							if (btn.getElementsByClassName("photo").length > 0)
+								$("#img-preview").attr("src", btn.getElementsByClassName("photo")[0].currentSrc);
+						}
+					})
 				});
 				$(slide).append(data);
 				$(slide).append(`<div class="page text-end"><h4>${page}</h4></div>`);

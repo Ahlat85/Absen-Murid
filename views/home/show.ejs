@@ -24,7 +24,7 @@
                                 <form action="/home/<%- body.database -%>/add" method="POST" enctype="multipart/form-data">
                                     <div class="mb-3">
                                         <label for="img" class="form-label">Foto</label>
-                                        <input required="on" autocomplete="off" type="file" class="form-control" id="img" name="img">
+                                        <input required="on" autocomplete="off" type="file" accept="images/*" class="form-control" id="img" name="img">
                                     </div>
                                     <div class="mb-3">
                                         <label for="nama" class="form-label">Nama</label>
@@ -69,9 +69,10 @@
                                 <form action="/home/<%- body.database -%>/update" method="POST" enctype="multipart/form-data">
                                     <input type="hidden" name="id1" id="id1">
                                     <div class="mb-3">
-                                        <img src="" id="img-preview" class="photo">
                                         <label for="img1" class="form-label">Foto</label>
-                                        <input autocomplete="off" type="file" class="form-control" id="img1" name="img1">
+                                        <br>
+                                        <img src="" id="img-preview" class="photo mb-2">
+                                        <input autocomplete="off" type="file" accept="images/*" class="form-control" id="img1" name="img1">
                                     </div>
                                     <div class="mb-3">
                                         <label for="nama1" class="form-label">Nama</label>

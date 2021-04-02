@@ -16,6 +16,16 @@ function addDatabase(name) {
 	return true;
 }
 
+function deleteDatabase(name) {
+	const databases = readDatabases();
+	if (!name in databases)
+		return false;
+	delete databases[name];
+	fs.rmdir(`./databases/img/${name}/`, {recursive: true}, err => {});
+	fs.writeFileSync(DATABASE, JSON.stringify(databases));
+	return true;
+}
+
 function readDatabases() {
 	try {
 		const result = JSON.parse(fs.readFileSync(DATABASE, "utf8"));
@@ -38,8 +48,6 @@ function getDatabasesName() {
 
 
 function getTabel(database) {
-	validateTabel(database);
-
 	const databases = readDatabases();
 	if (databases == null || !database in databases)
 		return {};
@@ -48,7 +56,7 @@ function getTabel(database) {
 
 function validateTabel(database) {
 	const databases = readDatabases();
-	if (!databases || !databases.isEmpty() || !database in databases)
+	if (databases == null || !database in databases)
 		return false;
 	for (let i = 0; i < databases[database].length; i++) {
 		let isValid = false;
@@ -56,15 +64,13 @@ function validateTabel(database) {
 			if (key == "id")
 				isValid = true;
 		if (!isValid)
-			delete databases[database][i];
+			databases[database].splice(i, 1);
 	}
 	fs.writeFileSync(DATABASE, JSON.stringify(databases));
 	return true;
 }
 
 function deleteData(database, id) {
-	validateTabel(database);
-	
 	const databases = readDatabases();
 	if (databases == null ||  !database in databases)
 		return null;
@@ -72,12 +78,14 @@ function deleteData(database, id) {
 		if (databases[database][i].id == id) {
 			if (databases[database][i].img) {
 				try {
-					fs.unlinkSync(`./databases/img/${database}/${databases[database][i].img}`, err => console.log(err));
+					fs.unlinkSync(`./databases/img/${database}/${databases[database][i].img}`, err => {});
 				} catch(e) {}
 			}
 			delete databases[database][i];
 		}
 	fs.writeFileSync(DATABASE, JSON.stringify(databases));
+
+	validateTabel(database);
 	return true;
 }
 
@@ -95,7 +103,7 @@ function addData(database, req) {
 
 	fs.mkdir(`./databases/img/${req.params.database}/`, {recursive: true}, err => {});
 
-	file.mv(`./databases/img/${req.params.database}/${fileName}`, err => console.log(err));
+	file.mv(`./databases/img/${req.params.database}/${fileName}`, err => {});
 	const newData = req.body;
 	newData.img = fileName;
 	newData.id = new Date().getTime();
@@ -107,7 +115,7 @@ function addData(database, req) {
 
 function getById(database, id) {
 	const tabel = getTabel(database);
-	if (tabel.isEmpty())
+	if (tabel)
 		return {};
 	for (let i = 0; i < tabel.length; i++)
 			return tabel[i];
@@ -115,8 +123,6 @@ function getById(database, id) {
 }
 
 function updateData(database, id, req) {
-	validateTabel(database);
-
 	const databases = readDatabases();
 	if (databases == null ||  !database in databases)
 		return null;
@@ -138,23 +144,20 @@ function updateData(database, id, req) {
 
 		if (id != "") {
 			const old = getById(database, id);
-			if (!old.isEmpty() && old.img) {
+			if (old && old.img) {
 				try {
-					fs.unlinkSync(`./databases/img/${database}/${old.img}`, err => console.log(err));
+					fs.unlinkSync(`./databases/img/${database}/${old.img}`, err => {});
 				} catch(e) {}
 			}
 		}
 
-		req.files.img1.mv(`./databases/img/${database}/${fileName}`, err => console.log(err));
+		req.files.img1.mv(`./databases/img/${database}/${fileName}`, err => {});
 		newData.img = fileName;
 	} else {
 		if (id != "") {
 			const old = getById(database, id);
-			if (!old || !old.img) {
-				try {
-					fs.unlinkSync(`./databases/img/${database}/${old.img}`, err => console.log(err));
-				} catch (e) {}
-			}
+			if (old || old.img)
+				newData.img = old.img;
 		}
 	}
 
@@ -171,4 +174,4 @@ function updateData(database, id, req) {
 	return newData;
 }
 
-module.exports = {validateTabel, addDatabase, getById, readDatabases, deleteData, getDatabasesName, getTabel, addData, updateData};
+module.exports = {validateTabel, deleteDatabase, addDatabase, getById, readDatabases, deleteData, getDatabasesName, getTabel, addData, updateData};
