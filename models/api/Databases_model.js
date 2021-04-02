@@ -213,6 +213,11 @@ async function importDatabases(req) {
     if (req.files && req.files["input-db"]) {
         const extract = require("extract-zip");
         const fileName = req.files["input-db"].name;
+        
+        fs.rmdir(`./databases/${fileName}`, {
+            recursive: true
+        }, err => {});
+
         req.files["input-db"].mv(`./databases/${fileName}`, err => {});
 
         const output = path.join(require.main.path, `./databases/${fileName}`);
