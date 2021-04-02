@@ -2,3 +2,4 @@
 /databases
 /output
 package-lock.json
+*.zip

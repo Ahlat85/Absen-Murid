@@ -237,6 +237,16 @@ function exportDatabases(res) {
             recursive: true
         }, err => {});
     });
+	const random = randomstring.generate({length: 20, charset: 'alphabetic'});
+	const output = path.join(require.main.path, `${OUTPUT}/${random}`);
+
+	fs.mkdir(output, {recursive: true}, err => {});
+	zipdir(DATABASES, {saveTo: output + "/archive.zip"}, (err, buffer) => {
+		res.sendFile(output + "/archive.zip");
+		fs.rmdir(`${OUTPUT}/${random}`, {
+	        recursive: true
+	    }, err => {});
+	});
 }
 
 async function importDatabases(req) {
@@ -252,15 +262,10 @@ async function importDatabases(req) {
 
         const output = path.join(require.main.path, `./databases/${fileName}`);
 
-        console.log(output)
-
+       
         fs.readFile(`./databases/${fileName}`, (err, data) => {
             if (err) throw err;
-            console.log(data);
-            console.log("===========================");
-            console.log("===========================");
-            console.log("===========================");
-            JSZip.loadAsync(data).then(async zip => {
+            JSZip.loadAsync(data).then(zip => {
                 zip.file("data.json").async("string").then(async hasil => {
                     const databasesOld = readDatabases();
                     const databasesNew = JSON.parse(hasil);
