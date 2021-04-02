@@ -8,14 +8,14 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-12">
-				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDatabase">Tambahkan Database</button>
+				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDatabase">Tambahkan DB</button>
 
                 <div class="modal fade" id="addDatabase" tabindex="-1" aria-labelledby="addDatabase" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addDatabase">Tambahkan
-                                    Database
+                                    DB
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
@@ -34,7 +34,35 @@
                         </div>
                     </div>
                 </div>
-			</div>
+
+                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#importDB">Import DB</button>
+                <a class="btn btn-success" href="/home/export-db">Export DB</a>
+
+                <div class="modal fade" id="importDB" tabindex="-1" aria-labelledby="importDB" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="importDB">Import
+                                    DB
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                               <form enctype="multipart/form-data" action="/home/import-db/" method="post">
+                               		<div class="mb-3">
+                                        <label for="input-db" class="form-label">DB</label>
+                                        <input required="on" autocomplete="off" type="file" accept=".zip" class="form-control" id="input-db" name="input-db" autofocus="on">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="reset" class="btn btn-secondary"><i class="bi bi-x-diamond-fill"></i> Reset Form</button>
+                                        <button type="submit" class="btn btn-primary"><i class="bi bi-save-fill"></i> Simpan</button>
+                                    </div>
+                               </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</div>
 		<div class="row mt-sm-3">
 			<div class="col-sm-12">
