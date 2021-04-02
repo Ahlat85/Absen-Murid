@@ -1,6 +1,10 @@
 const fs = require("fs");
+const fse = require("fs-extra");
 const path = require("path");
 
+
+const JSZip = require("jszip");
+const zipdir = require("zip-dir");
 const randomstring = require("randomstring");
 
 const DATABASES = "./databases";
@@ -57,6 +61,27 @@ function getTabel(database) {
     if (databases == null || !database in databases)
         return {};
     return databases[database] == undefined ? {} : databases[database];
+}
+
+//  Validasi dari database obj.
+function validateDatabase(database) {
+    for (let i = 0; i < database.length; i++) {
+        let isValid = false;
+        for (const key in database[i])
+            if (key == "id")
+                isValid = true;
+        if (!isValid)
+            database.splice(i, 1);
+    }
+
+    let idBuffer = [];
+    for (let i = 0; i < database.length; i++) {
+        if (database[i].id in idBuffer) {
+            database.splice(i, 1);
+            continue;
+        }
+        idBuffer.push(database[i].id);
+    }
 }
 
 function validateTabel(database) {
@@ -195,8 +220,6 @@ function updateData(database, id, req) {
 }
 
 function exportDatabases(res) {
-	const zipdir = require("zip-dir");
-
 	const random = randomstring.generate({length: 20, charset: 'alphabetic'});
 	const output = path.join(require.main.path, `${OUTPUT}/${random}`);
 
@@ -213,7 +236,7 @@ async function importDatabases(req) {
     if (req.files && req.files["input-db"]) {
         const extract = require("extract-zip");
         const fileName = req.files["input-db"].name;
-        
+
         fs.rmdir(`./databases/${fileName}`, {
             recursive: true
         }, err => {});
@@ -221,10 +244,31 @@ async function importDatabases(req) {
         req.files["input-db"].mv(`./databases/${fileName}`, err => {});
 
         const output = path.join(require.main.path, `./databases/${fileName}`);
-        await extract(output, {dir: path.join(output, "..")}, err => {});
-        fs.rmdir(`./databases/${fileName}`, {
-            recursive: true
-        }, err => {});
+        
+        fs.readFile(`./databases/${fileName}`, (err, data) => {
+            if (err) throw err;
+            JSZip.loadAsync(data).then(zip => {
+                zip.file("data.json").async("string").then(async hasil => {
+                    const databasesOld = readDatabases();
+                    const databasesNew = JSON.parse(hasil);
+
+                    const result = [];
+                    if (databasesOld && databasesOld && databasesOld.length > databasesNew.length) {
+                        for (let i = 0; i < databasesNew.length; i++) {
+                            if (i < databasesOld.length - 1) {
+                                databasesNew[i] = databasesOld.concat(databasesNew[i]);
+                                validateDatabase(databasesNew);
+                            }
+                        }
+                    }
+
+                    await extract(output, {dir: path.join(output, "..")}, err => {});
+                    fs.rmdir(`./databases/${fileName}`, {
+                        recursive: true
+                    }, err => {});
+                })
+            });
+        })
     }
 }
 
