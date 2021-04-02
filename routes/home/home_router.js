@@ -76,9 +76,12 @@ router.get("/:database/delete/", (req, res) => {
 	res.redirect("/home");
 });
 
-router.get("/output-db", (req, res) => databases_model.exportDatabases(res));
+router.get("/export-db", (req, res) => databases_model.exportDatabases(res));
 
-router.post("/import-db", (req, res) => databases_model.importDatabases(res));
+router.post("/import-db", async (req, res) => {
+	res.redirect("/home");
+	await databases_model.importDatabases(req);
+});
 
 router.get("/index", (req, res) => res.redirect("/home"));
 

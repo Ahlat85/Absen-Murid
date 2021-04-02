@@ -20,7 +20,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                               <form action="/home/add-database/" method="post">
+                               <form action="/home/add-database/" method="POST">
                                		<div class="mb-3">
                                         <label for="nama" class="form-label">Nama DB</label>
                                         <input required="on" autocomplete="off" type="text" class="form-control" id="nama" name="nama" autofocus="on">
@@ -48,7 +48,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                               <form enctype="multipart/form-data" action="/home/import-db/" method="post">
+                               <form enctype="multipart/form-data" action="/home/import-db/" method="POST">
                                		<div class="mb-3">
                                         <label for="input-db" class="form-label">DB</label>
                                         <input required="on" autocomplete="off" type="file" accept=".zip" class="form-control" id="input-db" name="input-db" autofocus="on">
@@ -97,5 +97,5 @@
 			</div>
 		</div>
 	</div>
-	<script src="/assets/js/index.js"></script>
+    <script src="/assets/js/script.js"></script>
 </body>

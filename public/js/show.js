@@ -57,7 +57,8 @@ $(document).ready(function() {
                             title: "Edit Data",
                             text: "Tekan 'Edit' jika ingin merubah data.",
                             icon: "question",
-                            confirmButtonText: "Edit"
+                            confirmButtonText: "Edit",
+                            showDenyButton: true
                         }).then(result => {
                             if (result.isConfirmed) {
                                 $("#delete-data").click(() => {
@@ -66,7 +67,7 @@ $(document).ready(function() {
                                         text: "Apakah Yakin Ingin Menghapusnya?",
                                         icon: "warning",
                                         confirmButtonText: "OK",
-                            			denyButtonText: "CANCEL"
+                            			showDenyButton: true
                                     }).then(result => {
                                         if (result.isConfirmed) {
                                             fetch(`/home/${database}/delete/${e[i].id}`, {

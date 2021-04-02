@@ -1,23 +1,6 @@
-// (async () => {
-// 	const randomstring = require("randomstring");
-
-// 	const DATABASES = "./databases";
-// 	const DATABASES_JSON =  DATABASES + "/data.json";
-// 	const OUTPUT = "./output";
-
-// 	// const output = `${OUTPUT}/${randomstring.generate({length: 20, charset: 'alphabetic'})}/archive.zip`;
-// 	const output = `${OUTPUT}/archive.zip`;
-// 	console.log(output);
-// 	// const zipdir = require("zip-dir");
-// 	// zipdir("./databases/", {saveTo: "./output/archive.zip"}, (err, buffer) => {
-// 	// 	console.log(err)
-// 	// 	console.log(buffer)
-// 	// })
-// })()
-
-
 const express = require("express");
 const upload = require("express-fileupload");
+
 const app = express();
 const PORT = process.env.PORT || 8512;
 

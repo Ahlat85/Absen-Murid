@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 
 const randomstring = require("randomstring");
 
@@ -70,6 +71,16 @@ function validateTabel(database) {
         if (!isValid)
             databases[database].splice(i, 1);
     }
+
+    let idBuffer = [];
+    for (let i = 0; i < databases[database].length; i++) {
+        if (databases[database][i].id in idBuffer) {
+            databases[database].splice(i, 1);
+            continue;
+        }
+        idBuffer.push(databases[database][i].id);
+    }
+
     fs.writeFileSync(DATABASES_JSON, JSON.stringify(databases));
     return true;
 }
@@ -185,7 +196,6 @@ function updateData(database, id, req) {
 
 function exportDatabases(res) {
 	const zipdir = require("zip-dir");
-	const path = require("path");
 
 	const random = randomstring.generate({length: 20, charset: 'alphabetic'});
 	const output = path.join(require.main.path, `${OUTPUT}/${random}`);
@@ -199,8 +209,18 @@ function exportDatabases(res) {
 	});
 }
 
-function importDatabases(req) {
-    console.log(req.files)
+async function importDatabases(req) {
+    if (req.files && req.files["input-db"]) {
+        const extract = require("extract-zip");
+        const fileName = req.files["input-db"].name;
+        req.files["input-db"].mv(`./databases/${fileName}`, err => {});
+
+        const output = path.join(require.main.path, `./databases/${fileName}`);
+        await extract(output, {dir: path.join(output, "..")}, err => {});
+        fs.rmdir(`./databases/${fileName}`, {
+            recursive: true
+        }, err => {});
+    }
 }
 
 module.exports = {
