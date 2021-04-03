@@ -221,6 +221,13 @@ function updateData(database, id, req) {
     return newData;
 }
 
+function isEmpty(obj) {
+    for (const prop in obj)
+        if (obj.hasOwnProperty(prop))
+            return false;
+    return true;
+}
+
 function exportDatabases(res) {
     const random = randomstring.generate({
         length: 20,
@@ -258,11 +265,20 @@ async function importDatabases(req) {
                         const databasesOld = readDatabases();
                         const databasesNew = JSON.parse(hasil);
 
-                        if (databasesOld && databasesOld && databasesOld.length > databasesNew.length) {
-                            for (let i = 0; i < databasesNew.length; i++) {
-                                if (i < databasesOld.length - 1) {
-                                    databasesNew[i] = databasesOld.concat(databasesNew[i]);
-                                    databasesNew = validateDatabase(databasesNew);
+                        let resultDB = databasesOld;
+                        if (!isEmpty(databasesNew) && !isEmpty(databasesOld)) {
+                            for (const key in databasesNew) {
+                                let idBuffer = [];
+                                for (let i = 0; i < databasesNew[key].length; i++) {
+
+                                    if (databasesNew[key][i].id in idBuffer) {
+                                        for (let j = 0; j < resultDB[key].length; j++) {
+                                            if (resultDB[key][i].id in idBuffer)
+                                                resultDB[key].slice(i, 1);
+                                        }
+                                    } else
+                                        resultDB[key].push(databasesNew[key][i]);
+
                                 }
                             }
                         }
@@ -274,7 +290,7 @@ async function importDatabases(req) {
                         fs.rmdir(output, {
                             recursive: true
                         }, err => {
-                            fs.writeFileSync(DATABASES_JSON, JSON.stringify(databasesNew));
+                            fs.writeFileSync(DATABASES_JSON, JSON.stringify(resultDB));
                         });
                     })
                 });
