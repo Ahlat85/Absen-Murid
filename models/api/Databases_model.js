@@ -229,6 +229,7 @@ function exportDatabases(res) {
     fs.mkdir(output, {
         recursive: true
     }, err => {});
+    
     zipdir(DATABASES, {
         saveTo: output + "/archive.zip"
     }, (err, buffer) => {
@@ -237,16 +238,6 @@ function exportDatabases(res) {
             recursive: true
         }, err => {});
     });
-	const random = randomstring.generate({length: 20, charset: 'alphabetic'});
-	const output = path.join(require.main.path, `${OUTPUT}/${random}`);
-
-	fs.mkdir(output, {recursive: true}, err => {});
-	zipdir(DATABASES, {saveTo: output + "/archive.zip"}, (err, buffer) => {
-		res.sendFile(output + "/archive.zip");
-		fs.rmdir(`${OUTPUT}/${random}`, {
-	        recursive: true
-	    }, err => {});
-	});
 }
 
 async function importDatabases(req) {
@@ -261,7 +252,6 @@ async function importDatabases(req) {
         req.files["input-db"].mv(`./databases/${fileName}`, err => {});
 
         const output = path.join(require.main.path, `./databases/${fileName}`);
-
        
         fs.readFile(`./databases/${fileName}`, (err, data) => {
             if (err) throw err;
