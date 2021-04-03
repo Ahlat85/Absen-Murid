@@ -229,7 +229,7 @@ function exportDatabases(res) {
     fs.mkdir(output, {
         recursive: true
     }, err => {});
-    
+
     zipdir(DATABASES, {
         saveTo: output + "/archive.zip"
     }, (err, buffer) => {
@@ -269,7 +269,7 @@ async function importDatabases(req) {
                         }
                     }
 
-                    await extract(DATABASES + `/${fileName}`, {
+                    extract(DATABASES + `/${fileName}`, {
                         dir: path.join(output, "..")
                     }, err => {});
 
