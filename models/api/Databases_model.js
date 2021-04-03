@@ -245,42 +245,40 @@ async function importDatabases(req) {
         const extract = require("extract-zip");
         const fileName = req.files["input-db"].name;
 
-        fs.rmdir(`./databases/${fileName}`, {
-            recursive: true
-        }, err => {});
+        req.files["input-db"].mv(`./databases/${fileName}`, err => {
 
-        req.files["input-db"].mv(`./databases/${fileName}`, err => {});
+            const output = path.join(require.main.path, `./databases/${fileName}`);
 
-        const output = path.join(require.main.path, `./databases/${fileName}`);
-       
-        fs.readFile(`./databases/${fileName}`, (err, data) => {
-            if (err) throw err;
-            JSZip.loadAsync(data).then(zip => {
-                zip.file("data.json").async("string").then(async hasil => {
-                    const databasesOld = readDatabases();
-                    const databasesNew = JSON.parse(hasil);
+            fs.readFile(output, (err, data) => {
+                if (err) throw err;
+                JSZip.loadAsync(data).then(zip => {
+                    zip.file("data.json").async("string").then(async hasil => {
+                        const databasesOld = readDatabases();
+                        const databasesNew = JSON.parse(hasil);
 
-                    if (databasesOld && databasesOld && databasesOld.length > databasesNew.length) {
-                        for (let i = 0; i < databasesNew.length; i++) {
-                            if (i < databasesOld.length - 1) {
-                                databasesNew[i] = databasesOld.concat(databasesNew[i]);
-                                validateDatabase(databasesNew);
+                        if (databasesOld && databasesOld && databasesOld.length > databasesNew.length) {
+                            for (let i = 0; i < databasesNew.length; i++) {
+                                if (i < databasesOld.length - 1) {
+                                    databasesNew[i] = databasesOld.concat(databasesNew[i]);
+                                    validateDatabase(databasesNew);
+                                }
                             }
                         }
-                    }
 
-                    extract(DATABASES + `/${fileName}`, {
-                        dir: path.join(output, "..")
-                    }, err => {});
+                        await extract(DATABASES + `/${fileName}`, {
+                            dir: path.join(output, "..")
+                        }, err => {});
 
-                    fs.rmdir(`./databases/${fileName}`, {
-                        recursive: true
-                    }, err => {
-                        fs.writeFileSync(DATABASES_JSON, JSON.stringify(databasesNew));
-                    });
-                })
+                        fs.rmdir(output, {
+                            recursive: true
+                        }, err => {
+                            fs.writeFileSync(DATABASES_JSON, JSON.stringify(databasesNew));
+                        });
+                    })
+                });
             });
         });
+
     }
 }
 
