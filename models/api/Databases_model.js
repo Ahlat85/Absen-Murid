@@ -82,6 +82,8 @@ function validateDatabase(database) {
         }
         idBuffer.push(database[i].id);
     }
+
+    return database;
 }
 
 function validateTabel(database) {
@@ -257,10 +259,11 @@ async function importDatabases(req) {
                         const databasesNew = JSON.parse(hasil);
 
                         if (databasesOld && databasesOld && databasesOld.length > databasesNew.length) {
+                            if ()
                             for (let i = 0; i < databasesNew.length; i++) {
                                 if (i < databasesOld.length - 1) {
                                     databasesNew[i] = databasesOld.concat(databasesNew[i]);
-                                    validateDatabase(databasesNew);
+                                    databasesNew = validateDatabase(databasesNew);
                                 }
                             }
                         }
