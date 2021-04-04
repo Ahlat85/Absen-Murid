@@ -32,19 +32,6 @@ app.get("*", (req, res) => {
     res.redirect("/home");
 });
 
-// app.get("/test", (req, res) => {
-// 	const DATABASES = "./databases";
-// 	const DATABASES_JSON =  DATABASES + "/data.json";
-// 	const OUTPUT = "./output";
-
-// 	// const output = `${OUTPUT}/${randomstring.generate({length: 20, charset: 'alphabetic'})}/archive.zip`;
-// 	const output = `${OUTPUT}/archive.zip`;
-// 	console.log("GET FILE")
-// 	console.log(__dirname)
-// 	// res.sendFile(output);
-// 	res.sendFile(__dirname + "/output/archive.zip");
-// })
-
 app.listen(PORT, () => {
     console.log(`Aplikasi Berjalan Port: ${PORT}`);
 });
