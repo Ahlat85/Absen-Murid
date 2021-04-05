@@ -30,10 +30,11 @@ router.post("/show/:database/:start/:end", (req, res) => {
 		return;
 	}
 	req.params.end = req.params.end > tabel.length ? tabel.length : req.params.end;
-	let result = [];
-	for (let i = req.params.start; i < req.params.end; i++) {
-		result.push(tabel[i])
-	}
+	const result = [];
+	const awal = parseInt(req.params.start);
+	const akhir = parseInt(req.params.end);
+	for (let i = awal; i < akhir; i++)
+		result.push(tabel[i]);
 	res.send(result)
 })
 

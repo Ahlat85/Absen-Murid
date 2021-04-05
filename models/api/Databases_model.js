@@ -161,8 +161,12 @@ function getById(database, id) {
     const tabel = getTabel(database);
     if (!tabel)
         return {};
-    for (let i = 0; i < tabel.length; i++)
-        return tabel[i];
+    for (let i = 0; i < tabel.length; i++) {
+	console.log(tabel[i]);
+	if (tabel[i] && tabel[i].id && tabel[i].id === id) {
+	    return tabel[i];
+	}
+    }
     return {};
 }
 
