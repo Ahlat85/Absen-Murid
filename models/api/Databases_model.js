@@ -162,7 +162,7 @@ function getById(database, id) {
     if (!tabel)
         return {};
     for (let i = 0; i < tabel.length; i++)
-	if (tabel[i] && tabel[i].id && tabel[i].id === id)
+	if (tabel[i] && tabel[i].id && tabel[i].id == id)
 	    return tabel[i];
     return {};
 }
@@ -182,29 +182,26 @@ function updateData(database, id, req) {
         id: id,
     };
 
+    const old = getById(database, id);
+
     if (req.files != null && req.files.img1 != null) {
         const fileName = new Date().getTime() + "_" + randomstring.generate({
             length: 20,
             charset: 'alphabetic'
         });
 
-        if (id != "") {
-            const old = getById(database, id);
-            if (old && old.img) {
-                try {
-                    fs.unlinkSync(`./databases/img/${database}/${old.img}`, err => {});
-                } catch (e) {}
-            }
+         if (old && old.img) {
+         	try {
+                fs.unlinkSync(`./databases/img/${database}/${old.img}`, err => {});
+            } catch (e) {}
         }
 
         req.files.img1.mv(`./databases/img/${database}/${fileName}`, err => {});
         newData.img = fileName;
     } else {
-        if (id != "") {
-            const old = getById(database, id);
-            if (old || old.img)
-                newData.img = old.img;
-        }
+        if (old || old.img) {
+           newData.img = old.img;
+	     }
     }
 
     if (id == "") {
