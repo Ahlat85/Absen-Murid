@@ -33,21 +33,14 @@ $(document).ready(function() {
                     const ul = toDOM("<ul></ul>");
                     for (const key in e[i]) {
                         if (key == "img") {
-                            $(data).append(`<img src="/db/img/${database}/${e[i][key].trim()}" class="photo">`)
-                        } else if (key == "id") {
-                            $(ul).append(`
-							<li class="d-none">
-								<h6 class="data-key d-inline text-uppercase">${key.trim()}: </h6>
-                                <p class="data-value d-inline">${e[i][key]}</p>
-							</li>
-							`);
+                            $(data).append(`<img src="/db/img/${database}/${e[i][key].trim()}" class="photo">`);
                         } else {
                             $(ul).append(`
-							<li>
-								<h6 class="data-key d-inline text-uppercase">${key.trim()}: </h6>
-                                <p class="data-value d-inline">${e[i][key]}</p>
-							</li>
-							`);
+                               <li class="${key.trim()}">
+					<h6 class="data-key d-inline text-uppercase">${key.trim()}: </h6>
+                                        <p class="data-value d-inline">${e[i][key]}</p>
+				</li>
+			     `);  
                         }
                     }
                     $(data).append(ul);
