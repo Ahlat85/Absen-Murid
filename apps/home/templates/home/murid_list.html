@@ -1,0 +1,51 @@
+{% extends "body.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+    {% if is_paginated %}
+    <h1>Paginator</h1>
+    <nav aria-label="murid-pagination">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="/list/{{page_obj.previous_page_number}}">Previous</a></li>
+        {% endif %}
+
+        {% for i in paginator.page_range %}
+        <li class="page-item"><a class="page-link" href="/list/{{i}}">{{i}}</a></li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="/list/{{page_obj.next_page_number}}">Next</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+    <button id="cetak" class="btn btn-warning">Cetak</button>
+    <a href="/create" class="btn btn-primary">Tambah</a>
+    <div class="slide">
+      {% for murid in object_list %}
+      <div class="data">
+        <img src="{{murid.foto}}">
+        <ul>
+          <li>
+            <p>
+              Nama: <span class="fw-bold">{{murid.nama}}</span>
+            </p>
+          </li>
+          <li>
+            <p>
+              Ayah: <span class="fw-bold">{{murid.ayah}}</span>
+            </p>
+          </li>
+        </ul>
+        <a href="/admin/home/muridmodel/{{murid.id}}/change/" class="btn btn-info">Edit</a>
+      </div>
+      {% endfor %}
+      <div class="page">
+        <h6>Halaman: <span id="halaman">{{page_obj.number}}</span></h6>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

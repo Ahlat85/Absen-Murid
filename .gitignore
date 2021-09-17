@@ -1,5 +1,4 @@
-/node_modules
-/databases
-/output
-package-lock.json
-*.zip
+test.py
+db.sqlite3
+__pycache__
+data
